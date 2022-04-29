@@ -127,7 +127,7 @@ min = 999
 minarr = []
 
 #the bigger the range the better the result, set at 30 for a good heuristic, >15000 is stupid
-for k in range(0,12000):
+for k in range(0,100):
     found = []
     size = 0
 
