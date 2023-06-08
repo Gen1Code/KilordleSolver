@@ -11,20 +11,6 @@ public class Main {
     static double lastmax, max;
     static ArrayList<String> allwords;
 
-    //Good starts,
-    //jujus, abuzz, zanja, ozzie, ajiva
-    // pzazz, qajaq, zizit, jokey,
-    // yukky,
-
-    //no x needed as first cha
-    // no q needed as fourth cha
-    // no j,q or v needed as fifth char
-
-    // likely occurrences?
-    // no z in 2nd pos
-
-    // you can change this to fit the remaining wordles at the end
-    // e.g. you need to find words with ixyx- zqz-- would be "iz","xq","yz","x",""
     static String[] alphabet = new String[]{"abcdefghijklmnopqrstuvwyz", "abcdefghijklmnopqrstuvwxy", "abcdefghijklmnoprstuvwxyz", "abcdefghijklmnoprstuvwxyz", "abcdefghiklmnoprstuwxyz"};
 
     //alphabet = {"abcdefghijklmnopqrstuvwyz","abcdefghijklmnopqrstuvwxy","abcdefghijklmnopqrstuvwxyz","abcdefghijklmnoprstuvwxyz","abcdefghiklmnoprstuwxyz"}
@@ -129,7 +115,7 @@ public class Main {
         System.out.println("Running");
 
         try {
-            Scanner s = new Scanner(new File("src/com/company/scratch.txt"));
+            Scanner s = new Scanner(new File("../Words.txt"));
             allwords = new ArrayList<String>(Arrays.asList(s.nextLine().replace("\"","").split(",")));
             s.close();
         } catch (FileNotFoundException e) {
@@ -183,6 +169,7 @@ public class Main {
         System.out.println(Arrays.toString(minarr));
         System.out.println(min);
     }
+
     /*
     * [buzzy, whump, howff, unfix, zimbi, cwtch, oxbow, pyxed, djinn, flows,
     *  vendu, schul, abysm, impro, yrapt, kacha, eggar, mvule, nertz, skegg,
