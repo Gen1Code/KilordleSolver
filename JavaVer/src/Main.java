@@ -1,4 +1,3 @@
-package com.company;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -10,60 +9,60 @@ public class Main {
     static String[] alphabet;
 
     static Map<Character, Double> weights = Map.ofEntries(
-        entry('a',1.105),
-        entry('b',1.027),
-        entry('c',1.036),
-        entry('d',1.033),
-        entry('e',1.1),
-        entry('f',1.020),
-        entry('g',2.6),
-        entry('h',1.031),
-        entry('i',1.061),
-        entry('j',1.002),
-        entry('k',1.021),
-        entry('l',1.056),
-        entry('m',1.031),
-        entry('n',1.052),
-        entry('o',1.066),
-        entry('p',1.03),
-        entry('q',1.002),
-        entry('r',1.072),
-        entry('s',1.075),
-        entry('t',1.056),
-        entry('u',1.044),
-        entry('v',1.011),
-        entry('w',1.016),
-        entry('x',1.002),
-        entry('y',1.038),
-        entry('z',1.006)
+            entry('a',1.105),
+            entry('b',1.027),
+            entry('c',1.036),
+            entry('d',1.033),
+            entry('e',1.1),
+            entry('f',1.020),
+            entry('g',2.6),
+            entry('h',1.031),
+            entry('i',1.061),
+            entry('j',1.002),
+            entry('k',1.021),
+            entry('l',1.056),
+            entry('m',1.031),
+            entry('n',1.052),
+            entry('o',1.066),
+            entry('p',1.03),
+            entry('q',1.002),
+            entry('r',1.072),
+            entry('s',1.075),
+            entry('t',1.056),
+            entry('u',1.044),
+            entry('v',1.011),
+            entry('w',1.016),
+            entry('x',1.002),
+            entry('y',1.038),
+            entry('z',1.006)
     );
 
     static List<Map<Character,Double>> sweights = Arrays.asList(
-       Map.of(
-       'v',0.00,
-        'q',0.02,
-        's',-0.02
-       ),
-       Map.of(
-       'q',0.00,
-        'v',0.02,
-        'g',0.02,
-        'j',0.02
-       ),
-       Map.of('k',0.00),
-       Map.of('x',0.02),
-       Map.of()
+            Map.of(
+                    'v',0.00,
+                    'q',0.02,
+                    's',-0.02
+            ),
+            Map.of(
+                    'q',0.00,
+                    'v',0.02,
+                    'g',0.02,
+                    'j',0.02
+            ),
+            Map.of('k',0.00),
+            Map.of('x',0.02),
+            Map.of()
     );
 
 
     public static void generateAlphabetLibrary(ArrayList<String> words){
         System.out.println("Generating Alpha Library");
         //Generate needed characters in each positions from wordle list
-        with open("..\Wordles.txt") as f:
-            for line in f:
-                words.append(line.removesuffix("\n"))
+        //with open("..\Wordles.txt") as f:
+        //for line in f:
+        //words.append(line.removesuffix("\n"))
 
-                        
+
         for(String word : words){
             for(int i=0;i<5;i++){
                 if(alphabet[i].indexOf(word.charAt(i)) == -1){
@@ -216,13 +215,13 @@ public class Main {
 
 
     /*
-    * [buzzy, whump, howff, unfix, zimbi, cwtch, oxbow, pyxed, djinn, flows,
-    *  vendu, schul, abysm, impro, yrapt, kacha, eggar, mvule, nertz, skegg,
-    *  rusks, jelab, gadjo, lavvy, tsked, qapik, ataxy, ofays, upjet, adunc, squab]
-    *
-    *
-    *
-    *
-    *
-    * */
+     * [buzzy, whump, howff, unfix, zimbi, cwtch, oxbow, pyxed, djinn, flows,
+     *  vendu, schul, abysm, impro, yrapt, kacha, eggar, mvule, nertz, skegg,
+     *  rusks, jelab, gadjo, lavvy, tsked, qapik, ataxy, ofays, upjet, adunc, squab]
+     *
+     *
+     *
+     *
+     *
+     * */
 }
