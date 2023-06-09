@@ -2,18 +2,12 @@ package com.company;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
-
 import static java.util.Map.entry;
-import java.util.Properties;
 
 public class Main {
     static Random rnd = new Random();
-    static double lastmax, max;
-    static ArrayList<String> allwords;
 
-    static String[] alphabet = new String[]{"abcdefghijklmnopqrstuvwyz", "abcdefghijklmnopqrstuvwxy", "abcdefghijklmnoprstuvwxyz", "abcdefghijklmnoprstuvwxyz", "abcdefghiklmnoprstuwxyz"};
-
-    //alphabet = {"abcdefghijklmnopqrstuvwyz","abcdefghijklmnopqrstuvwxy","abcdefghijklmnopqrstuvwxyz","abcdefghijklmnoprstuvwxyz","abcdefghiklmnoprstuwxyz"}
+    static String[] alphabet;
 
     static Map<Character, Double> weights = Map.ofEntries(
         entry('a',1.105),
@@ -44,7 +38,7 @@ public class Main {
         entry('z',1.006)
     );
 
-    static Map<Character,Double>[] sweights = new Map[]{
+    static List<Map<Character,Double>> sweights = Arrays.asList(
        Map.of(
        'v',0.00,
         'q',0.02,
@@ -59,8 +53,33 @@ public class Main {
        Map.of('k',0.00),
        Map.of('x',0.02),
        Map.of()
-    };
+    );
 
+
+    public static void generateAlphabetLibrary(ArrayList<String> words){
+        System.out.println("Generating Alpha Library");
+        //Generate needed characters in each positions from wordle list
+        with open("..\Wordles.txt") as f:
+            for line in f:
+                words.append(line.removesuffix("\n"))
+
+                        
+        for(String word : words){
+            for(int i=0;i<5;i++){
+                if(alphabet[i].indexOf(word.charAt(i)) == -1){
+                    alphabet[i] += word.charAt(i);
+                }
+            }
+        }
+
+        //Sort each index for readability
+        for(int i=0;i<5;i++){
+            char[] tmp = alphabet[i].toCharArray();
+            Arrays.sort(tmp);
+            alphabet[i] = new String(tmp);
+        }
+        System.out.println(alphabet);
+    }
 
     public static boolean containall(String[] givenarray,int size){
         boolean flag = true;
@@ -90,8 +109,8 @@ public class Main {
     }
 
     public static double getSWeight(Character chara,int pos) {
-        if (sweights[pos].containsKey(chara)) {
-            return sweights[pos].get(chara);
+        if (sweights.get(pos).containsKey(chara)) {
+            return sweights.get(pos).get(chara);
         }else{
             return 0;
         }
@@ -113,6 +132,13 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("Running");
+        double lastmax;
+        double max = 0;
+        ArrayList<String> allwords;
+
+        ArrayList<String> words  = new ArrayList<>();
+
+        generateAlphabetLibrary(words);
 
         try {
             Scanner s = new Scanner(new File("../Words.txt"));
@@ -120,6 +146,7 @@ public class Main {
             s.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace(System.err);
+            return;
         }
 
         int min = 999;
@@ -169,6 +196,24 @@ public class Main {
         System.out.println(Arrays.toString(minarr));
         System.out.println(min);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /*
     * [buzzy, whump, howff, unfix, zimbi, cwtch, oxbow, pyxed, djinn, flows,

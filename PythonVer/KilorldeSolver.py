@@ -93,7 +93,7 @@ specialWeights = [{
 print("Generating Alpha Library")
 
 #Generate needed characters in each positions from wordle list
-with open("Wordles.txt") as f:
+with open("..\Wordles.txt") as f:
     for line in f:
         words.append(line.removesuffix("\n"))
 
@@ -116,7 +116,7 @@ print(alphabet)
 #alphabet = ["abcdefghijklmnopqrstuvwxyz","abcdefghijklmnopqrstuvwxyzy","abcdefghijklmnopqrstuvwxyz","abcdefghijklmnopqrstuvwxyz","abcdefghijklmnopqrstuvwxyz"]
 
 #Append all other valid words to the wordle list
-with open("Words.txt") as f:
+with open("..\Words.txt") as f:
     for line in f:
         words.append(line.removesuffix("\n"))
 
@@ -140,7 +140,7 @@ for k in range(0,100):
         max = 0
         x = ''
         AlphaLibrary = generateAlphaLibrary(found,size)
-        beg = size <=8 #15 has given me the lowest guesses: 31
+        beg = size <=15 #15 has given me the lowest guesses: 31
 
         #Find the amount of information gained for each word, add the word that gives most information
         for word in words:
