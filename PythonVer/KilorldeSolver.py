@@ -92,8 +92,7 @@ with open("..\Wordles.txt") as f:
 
 for word in words:
     for i in range(5):
-        if word[i] not in alphabet[i]:
-            alphabet[i].add(word[i])
+        alphabet[i].add(word[i])
 
 #Append all other valid words to the wordle list
 with open("..\Words.txt") as f:
