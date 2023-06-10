@@ -1,36 +1,29 @@
 import random
 
 #checks to see if an appropriate amount of information has been acheived
-def containall(givenarray,size):
-    flag =True
+def containall(AlphabetLeft):
+    flag = True
     for i in range(0,5):
-        tempalpha = alphabet[i][:]
-        for j in range(0,size):
-            tempalpha = tempalpha.replace(givenarray[j][i],'')
-        if len(tempalpha)>0:#amount of letter per position 
+        if len(AlphabetLeft[i]) > 0:#amount of letters left per position 
             flag = False
             break
     return flag
 
 #Generates an array containing the strings of letters not yet used in each position
-def generateAlphaLibrary(givenarray,size):
-    arr =[]
+def generateAlphaLibrary(AlphabetLeft,newWord):
     for i in range(0,5):
-        tempalpha = alphabet[i][:]
-        for j in range(0,size):
-            tempalpha = tempalpha.replace(givenarray[j][i],'')
-        arr.append(tempalpha)
-    return arr
+        AlphabetLeft[i] = AlphabetLeft[i].replace(newWord[i],'')
 
-#returns the amount of new AlphaLocations found if this word was used as the next word
+
+#returns the amount of information found if this word was used as the next word
 def newAlphaLocations(AlphabetLeft,word,beg):
-    count =0
+    count = 0
     for i in range(0,5):
         if word[i] in AlphabetLeft[i]:
             if beg:
                 count = count + random.random()*0.03+1/(weights[word[i]])
             else:
-                count = count + 1 +getSWeight(word[i],i)
+                count = count + 1 + getSWeight(word[i],i)
     return count
 
 def getSWeight(char,pos):
@@ -38,6 +31,12 @@ def getSWeight(char,pos):
         return specialWeights[pos][char]
     else:
         return 0
+    
+def copyAlphabet():
+    tmp = []
+    for i in range(0,5):
+        tmp.append(alphabet[i][:])
+    return tmp
 
 #MAIN
 print("Running")
@@ -52,7 +51,7 @@ weights = {
     "d":1.033,
     "e":1.1,
     "f":1.020,
-    "g":2.6,
+    "g":1.06,
     "h":1.031,
     "i":1.061,
     "j":1.002,
@@ -123,23 +122,25 @@ with open("..\Words.txt") as f:
 
 print("Finding Combination")
 
-min = 999
-minarr = []
+minNumWords = 40
+minWords = []
 
-#the bigger the range the better the result, set at 30 for a good heuristic, >15000 is stupid
-for k in range(0,100):
+#the bigger the range the better the result, set at 30 for a good heuristic, >10000 will take too long
+for k in range(0,300):
     found = []
     size = 0
-
+    max = 0
+    lastmax = 0
+    AlphaLibrary = copyAlphabet()
     #shuffle the words so as to change which word is picked when information gain is the same
     random.shuffle(words)
+    print(k)
 
     #while not enough information found keep adding words
     while True:
-        lastmax = max
+        lastmax = max 
         max = 0
         x = ''
-        AlphaLibrary = generateAlphaLibrary(found,size)
         beg = size <=15 #15 has given me the lowest guesses: 31
 
         #Find the amount of information gained for each word, add the word that gives most information
@@ -154,14 +155,16 @@ for k in range(0,100):
         found.append(x)
         size = size + 1
 
-        if size >= min:
+        generateAlphaLibrary(AlphaLibrary,found[-1])
+
+        if size >= minNumWords:
             break
-        elif containall(found,size): #if new group of words is smaller than last then save for later
-            min = size
-            minarr = found
+        elif containall(AlphaLibrary): #if new group of words is smaller than last then save for later
+            minNumWords = size
+            minWords = found
             print(str(size)+" words were found that fulfill the criteria")
             break        
 
 print("Lowest amount of words that fulfilled criteria:")
-print(minarr)
-print(min)
+print(minWords)
+print(minNumWords)
