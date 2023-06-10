@@ -56,7 +56,7 @@ public class Main{
         for(int i = 0; i < 5; i++){
             if(alphabetLeft[i].contains(word.charAt(i))){
                 if(beg){
-                    count += random.nextDouble() * 0.05 + 1.0 / weights.get(word.charAt(i));
+                    count += random.nextDouble() * 0.1 + 1.0 / weights.get(word.charAt(i));
                 }else{
                     count += 1.0 + getSWeight(word.charAt(i), i);
                 }
@@ -96,12 +96,12 @@ public class Main{
         System.out.println("Generating Alpha Library");
 
         //Generate needed characters in each position from wordle list
-        try(BufferedReader reader = new BufferedReader(new FileReader("..\\Wordles.txt"))){
-            String line;
-            while((line = reader.readLine()) != null){
-                words.add(line);
-            }
+        BufferedReader br = new BufferedReader(new FileReader("..\\Wordles.txt"));
+        String line;
+        while((line = br.readLine()) != null){
+            words.add(line);
         }
+        br.close();
 
         for(String word : words){
             for(int i = 0; i < 5; i++){
@@ -110,12 +110,11 @@ public class Main{
         }
 
         //Append all other valid words to the wordle list
-        try(BufferedReader reader = new BufferedReader(new FileReader("..\\Words.txt"))){
-            String line;
-            while((line = reader.readLine()) != null){
-                words.add(line);
-            }
+        br = new BufferedReader(new FileReader("..\\Words.txt"));
+        while((line = br.readLine()) != null){
+            words.add(line);
         }
+        br.close();
 
         System.out.println("Finding Combinations");
 
@@ -123,7 +122,7 @@ public class Main{
         List<String> minWords = new ArrayList<>();
 
         //The bigger the range, the better the result. Set at 300 for a good heuristic, >10000 is way too big
-        for(int k = 0; k < 300; k++){
+        for(int k = 0; k < 3000; k++){
             List<String> found = new ArrayList<>();
             int size = 0;
             Set<Character>[] alphaLibrary = copyAlphabet(alphabet);
