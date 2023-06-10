@@ -2,50 +2,44 @@ import random
 
 #checks to see if an appropriate amount of information has been acheived
 def containall(AlphabetLeft):
-    flag = True
-    for i in range(0,5):
-        if len(AlphabetLeft[i]) > 0:#amount of letters left per position 
-            flag = False
-            break
-    return flag
+    return all(not AlphabetLeft[i] for i in range(5))
 
 #Generates an array containing the strings of letters not yet used in each position
-def generateAlphaLibrary(AlphabetLeft,newWord):
-    for i in range(0,5):
-        AlphabetLeft[i] = AlphabetLeft[i].replace(newWord[i],'')
-
+def updateAlphaLibrary(AlphabetLeft,newWord):
+    for i in range(5):
+        AlphabetLeft[i].discard(newWord[i])
 
 #returns the amount of information found if this word was used as the next word
 def newAlphaLocations(AlphabetLeft,word,beg):
     count = 0
-    for i in range(0,5):
+    for i in range(5):
         if word[i] in AlphabetLeft[i]:
             if beg:
-                count = count + random.random()*0.03+1/(weights[word[i]])
+                count += random.random()*0.05 + 1 / weights[word[i]]
             else:
-                count = count + 1 + getSWeight(word[i],i)
+                count += 1 + getSWeight(word[i],i)
+
+    if count == 0:
+        wordsToRemove.add(word)
     return count
 
 def getSWeight(char,pos):
-    if char in specialWeights[pos]:
-        return specialWeights[pos][char]
-    else:
-        return 0
+    return specialWeights[pos].get(char,0)
     
 def copyAlphabet():
     tmp = []
-    for i in range(0,5):
-        tmp.append(alphabet[i][:])
+    for i in range(5):
+        tmp.append(set(alphabet[i]))
     return tmp
 
 #MAIN
 print("Running")
 
 #Setup
-words = []
-alphabet = [""]*5
+words = set()
+alphabet = [set() for _ in range(5)]
 weights = {
-    "a":1.105,
+    "a":1.125,
     "b":1.027,
     "c":1.036,
     "d":1.033,
@@ -94,75 +88,56 @@ print("Generating Alpha Library")
 #Generate needed characters in each positions from wordle list
 with open("..\Wordles.txt") as f:
     for line in f:
-        words.append(line.removesuffix("\n"))
+        words.add(line.removesuffix("\n"))
 
 for word in words:
-    for i in range(0,5):
+    for i in range(5):
         if word[i] not in alphabet[i]:
-            alphabet[i] += word[i]
-
-#Sort each index for readability
-for i in range(0,5):
-    alphabet[i] = ''.join(sorted(alphabet[i]))
-
-print(alphabet)
-
-#You can un comment and change this to fit your own wordle list
-#This is one generated for this kilordle: https://jonesnxt.github.io/kilordle/
-#alphabet = ['abcdefghijklmnopqrstuvwyz', 'abcdefghijklmnopqrstuvwxyz', 'abcdefghijklmnopqrstuvwxyz', 'abcdefghijklmnoprstuvwxyz', 'abcdefghiklmnoprstuwxyz']
-
-#copyable comment, full alphabet in each position
-#alphabet = ["abcdefghijklmnopqrstuvwxyz","abcdefghijklmnopqrstuvwxyzy","abcdefghijklmnopqrstuvwxyz","abcdefghijklmnopqrstuvwxyz","abcdefghijklmnopqrstuvwxyz"]
+            alphabet[i].add(word[i])
 
 #Append all other valid words to the wordle list
 with open("..\Words.txt") as f:
     for line in f:
-        words.append(line.removesuffix("\n"))
+        words.add(line.removesuffix("\n"))
 
+print("Finding Combinations")
 
-print("Finding Combination")
-
-minNumWords = 40
+minNumWords = 42
 minWords = []
 
-#the bigger the range the better the result, set at 30 for a good heuristic, >10000 will take too long
-for k in range(0,300):
+#the bigger the range the better the result, set at 30 for a good heuristic, >10000 is way too big
+for k in range(30):
     found = []
     size = 0
-    max = 0
-    lastmax = 0
     AlphaLibrary = copyAlphabet()
-    #shuffle the words so as to change which word is picked when information gain is the same
-    random.shuffle(words)
-    print(k)
+    workingWords = words.copy()
 
     #while not enough information found keep adding words
     while True:
-        lastmax = max 
-        max = 0
-        x = ''
+        maxInfo = 0
+        bestWord = ""
         beg = size <=15 #15 has given me the lowest guesses: 31
+        wordsToRemove = set()
 
         #Find the amount of information gained for each word, add the word that gives most information
-        for word in words:
+        for word in workingWords:
             temp = newAlphaLocations(AlphaLibrary, word, beg)
-            if temp > max:
-                max = temp
-                x = word
-            if max == lastmax and not beg:
-                break
+            if temp > maxInfo:
+                maxInfo = temp
+                bestWord = word
         
-        found.append(x)
-        size = size + 1
+        found.append(bestWord)
+        size += 1
+        updateAlphaLibrary(AlphaLibrary,found[-1])
 
-        generateAlphaLibrary(AlphaLibrary,found[-1])
+        workingWords.difference_update(wordsToRemove)
 
         if size >= minNumWords:
             break
         elif containall(AlphaLibrary): #if new group of words is smaller than last then save for later
             minNumWords = size
             minWords = found
-            print(str(size)+" words were found that fulfill the criteria")
+            print(f"{size} words were found that fulfill the criteria")
             break        
 
 print("Lowest amount of words that fulfilled criteria:")

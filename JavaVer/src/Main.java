@@ -16,7 +16,7 @@ public class Main {
             entry('d',1.033),
             entry('e',1.1),
             entry('f',1.020),
-            entry('g',2.6),
+            entry('g',1.06),
             entry('h',1.031),
             entry('i',1.061),
             entry('j',1.002),
@@ -223,11 +223,11 @@ public class Main {
 
 
 
-    /*
+    /* 31:
      * [buzzy, whump, howff, unfix, zimbi, cwtch, oxbow, pyxed, djinn, flows,
      *  vendu, schul, abysm, impro, yrapt, kacha, eggar, mvule, nertz, skegg,
      *  rusks, jelab, gadjo, lavvy, tsked, qapik, ataxy, ofays, upjet, adunc, squab]
-     *
+     * [aas,ua,,,s]
      *
      *
      *
